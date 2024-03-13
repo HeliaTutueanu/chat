@@ -1,17 +1,32 @@
-import { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, ImageBackground } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, ImageBackground, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 const Start = ({ navigation }) => {
+    const auth = getAuth();
     const [name, setName] = useState('');
     const [background, setBackground] = useState('');
     const colors = ['#0B0D09', '#494257', '#8C97A7', '#BAC9B2'];
 
+    const signInUser = () => {
+        signInAnonymously(auth)
+          .then(result => {
+            navigation.navigate("Chat", { name: name, background: background, userID: result.user.uid });
+            Alert.alert("Signed in successfully!");
+          })
+          .catch((error) => {
+            Alert.alert("Unable to sign in, try again.");
+          })
+    }
+
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <ImageBackground source={require('../img/BackgroundImage.png')} style={styles.bgImage} resizeMode="cover">
                 <Text style={styles.appTitle}>Welcome</Text>
                 <View style={styles.box}>
                     <TextInput
+                        accessibilityLabel="Username input"
+                        accessibilityRole="text"
                         style={styles.textInput}
                         value={name}
                         onChangeText={setName}
@@ -21,18 +36,25 @@ const Start = ({ navigation }) => {
                     <View style={styles.colorButtonsBox}>
                         {colors.map((color, index) => (
                             <TouchableOpacity
+                                accessibilityLabel="Color Button"
+                                accessibilityHint="Choose a backgroundcolor for your chat."
+                                accessibilityRole="button"
                                 key={index}
-                                style={[styles.colorButton, { backgroundColor: color}, background === color && styles.selected]}
+                                style={[styles.colorButton, { backgroundColor: color }, background === color && styles.selected]}
                                 onPress={() => setBackground(color)}
                             />
                         ))}
                     </View>
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chat', { name: name, background: background })}>
+                    <TouchableOpacity
+                        accessibilityLabel="Start Chatting"
+                        accessibilityRole="button"
+                        style={styles.button}
+                        onPress={signInUser}>
                         <Text style={styles.buttonText}>Start Chatting</Text>
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
