@@ -55,8 +55,8 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, id }) => 
                         latitude: location.coords.latitude,
                     },
                 });
-            } else Alert.alert("Error occurred while fetching location");
-        } else Alert.alert("Permissions to accsess loaction haven't been granted.");
+            } else Alert.alert("Error occurred while fetching location.");
+        } else Alert.alert("Permission to access location hasn't been granted.");
     }
 
     // Name uploaded image
@@ -82,7 +82,7 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, id }) => 
         if (permissions?.granted) {
             let result = await ImagePicker.launchImageLibraryAsync();
             if (!result.canceled) await uploadAndSendImage(result.assets[0].uri);                
-            else Alert.alert("Permissions to accsess photo library haven't been granted.");
+            else Alert.alert("Permission to access photo library hasn't been granted.");
         }
     }
 
@@ -91,7 +91,7 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, id }) => 
         if (permissions?.granted) {
             let result = await ImagePicker.launchCameraAsync();
             if (!result.canceled) await uploadAndSendImage(result.assets[0].uri);
-            else Alert.alert("Permissions to use camera haven't been granted.")
+            else Alert.alert("Permission to access camera hasn't been granted.")
         }
     }
 

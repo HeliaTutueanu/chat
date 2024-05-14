@@ -35,4 +35,7 @@ This mobile application is designed for seamless communication on-the-go, built 
     - Navigate to the chat-app folder and install Firebase using `npm install firebase`
     - Initialize Firebase by copying and pasting the provided Firebase configuration into the App.js
 * Download Android Studio on your computer or use the Expo Go App on your mobile device
-* Run `expo start`
+* Run `npx expo start`
+* Open Android Studio or Expo Go App and select the Chat App
+
+<!-- To re-deploy, run: npx expo start -->
